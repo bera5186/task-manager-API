@@ -19,7 +19,7 @@ app.post('/users', (req, res) => {
 })
 
 // Create a new task
-app.post('/task', (req, res) => {
+app.post('/tasks', (req, res) => {
     const task = new Task(req.body)
     task.save().then(() => {
         res.status(201).send(task)
@@ -48,6 +48,25 @@ app.get('/users/:id', (req,res) => {
     })
 })
 
+// Fetching all Tasks
+app.get('/tasks', (req, res) => {
+    Task.find({}).then((task) => {
+        res.send(task)
+    }).catch((e) => {
+        res.status(500).send()
+    })
+})
+
+// Fetching single task
+app.get('/tasks/:id', (req, res) => {
+    const _id = req.params.id
+
+    Task.findById(_id).then((task) => {
+        res.send(task)
+    }).catch(() => {
+        res.status(404).send()
+    })
+})
 
 app.listen(port, () => {
     console.log('Running on Port '+ port)
